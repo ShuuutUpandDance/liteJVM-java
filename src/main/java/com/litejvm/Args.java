@@ -16,6 +16,9 @@ public class Args {
     @Parameter(names = { "-cp", "-classpath" }, description = "classpath", order = 1)
     String classpath;
 
+    @Parameter(names = "-Xjre", description = "path to jre directory", order = 4)
+    String Xjre;
+
     @Parameter(description = "main class and args")
     List<String> mainClassAndArgs;
 
