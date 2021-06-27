@@ -1,11 +1,19 @@
 package com.litejvm.rtdata;
 
 public class Thread {
-    private int pc;
-    private final Stack stack;
+    int pc;
+    final Stack stack;
 
     public Thread() {
         this.stack = new Stack(1024);
+    }
+
+    public int getPc() {
+        return pc;
+    }
+
+    public void setPc(int pc) {
+        this.pc = pc;
     }
 
     public void pushFrame(Frame frame) {

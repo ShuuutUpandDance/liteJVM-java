@@ -58,4 +58,11 @@ public class LocalVars {
     public Object getRef(int index) {
         return this.slots.get(index).ref;
     }
+
+    @Override
+    public String toString() {
+        return "LocalVars{" +
+                "slots=" + slots +
+                '}';
+    }
 }

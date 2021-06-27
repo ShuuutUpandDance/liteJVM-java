@@ -1,0 +1,37 @@
+package com.litejvm.instructions.control;
+
+import com.litejvm.instructions.base.BranchInstruction;
+import com.litejvm.instructions.base.BytecodeReader;
+import com.litejvm.rtdata.Frame;
+
+public class TABLE_SWITCH extends BranchInstruction {
+    int defaultOffset;
+    int low;
+    int high;
+    int[] jumpOffsets;
+
+    @Override
+    public void fetchOperands(BytecodeReader reader) {
+        reader.skipPadding();
+        defaultOffset = reader.readInt32();
+        low = reader.readInt32();
+        high = reader.readInt32();
+
+        int jumpOffsetsCount = high - low + 1;
+        jumpOffsets = reader.readInt32s(jumpOffsetsCount);
+    }
+
+    @Override
+    public void execute(Frame frame) {
+        int index = frame.getOperandStack().popInt();
+
+        int offset;
+        if (index >= low && index <= high) {
+            offset = jumpOffsets[index - low];
+        } else {
+            offset = defaultOffset;
+        }
+
+        branch(frame, offset);
+    }
+}

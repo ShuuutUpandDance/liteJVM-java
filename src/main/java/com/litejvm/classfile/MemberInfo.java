@@ -2,6 +2,7 @@ package com.litejvm.classfile;
 
 import com.litejvm.classfile.attribute.AbstractAttributeInfo;
 import com.litejvm.classfile.attribute.AttributeInfo;
+import com.litejvm.classfile.attribute.CodeAttribute;
 import com.litejvm.classfile.constant.ConstantPool;
 
 import java.util.ArrayList;
@@ -39,6 +40,15 @@ public class MemberInfo {
                 reader.readUint16(),
                 AbstractAttributeInfo.readAttributes(reader, constantPool)
                 );
+    }
+
+    public CodeAttribute getCodeAttribute() {
+        for (AttributeInfo attribute : attributes) {
+            if (attribute instanceof CodeAttribute) {
+                return (CodeAttribute) attribute;
+            }
+        }
+        return null;
     }
 
     public int getAccessFlags() {

@@ -5,7 +5,7 @@ import org.junit.Test;
 public class TestRTData {
     @Test
     public void test() {
-        Frame frame = new Frame(100, 100);
+        Frame frame = new Frame(100, 100, null);
         LocalVars localVars = frame.localVars;
         OperandStack operandStack = frame.operandStack;
 

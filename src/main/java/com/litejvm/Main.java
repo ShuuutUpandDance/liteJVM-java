@@ -4,6 +4,8 @@ import com.litejvm.classfile.ClassFile;
 import com.litejvm.classfile.MemberInfo;
 import com.litejvm.classpath.Classpath;
 
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
         Args cliArgs = Args.parse(args);
@@ -30,11 +32,29 @@ public class Main {
 
         ClassFile classFile = loadClass(formattedClassName, classpath);
         printClassInfo(classFile);
+
+        System.out.println("===============");
+        MemberInfo mainMethod = getMainMethod(classFile);
+        if (mainMethod != null) {
+            new Interpreter().interpret(mainMethod);
+        } else {
+            System.out.printf("Main method not found in class %s\n", args.getMainClass());
+        }
     }
 
     static ClassFile loadClass(String className, Classpath classpath) {
         byte[] bytes = classpath.readClass(className);
         return ClassFile.parse(bytes);
+    }
+
+    static MemberInfo getMainMethod(ClassFile classFile) {
+        List<MemberInfo> methods = classFile.getMethods();
+        for (MemberInfo method : methods) {
+            if (method.getName().equals("main") && method.getDescriptor().equals("([Ljava/lang/String;)V")) {
+                return method;
+            }
+        }
+        return null;
     }
 
     static void printClassInfo(ClassFile classFile) {
