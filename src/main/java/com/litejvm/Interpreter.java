@@ -1,25 +1,19 @@
 package com.litejvm;
 
-import com.litejvm.classfile.MemberInfo;
-import com.litejvm.classfile.attribute.CodeAttribute;
 import com.litejvm.instructions.InstructionFactory;
 import com.litejvm.instructions.base.BytecodeReader;
 import com.litejvm.instructions.base.Instruction;
 import com.litejvm.rtdata.Frame;
 import com.litejvm.rtdata.Thread;
+import com.litejvm.rtdata.heap.Method;
 
 public class Interpreter {
-    public void interpret(MemberInfo memberInfo) {
-        CodeAttribute codeAttribute = memberInfo.getCodeAttribute();
-        int maxLocals = codeAttribute.getMaxLocals();
-        int maxStack = codeAttribute.getMaxStack();
-        byte[] code = codeAttribute.getCode();
-
+    public void interpret(Method method) {
         Thread thread = new Thread();
-        Frame frame = new Frame(maxLocals, maxStack, thread);
+        Frame frame = new Frame(thread, method);
         thread.pushFrame(frame);
         try {
-            loop(thread, code);
+            loop(thread, method.code);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.printf("LocalVars: %s\n", frame.getLocalVars());
@@ -32,17 +26,18 @@ public class Interpreter {
         BytecodeReader reader = new BytecodeReader();
 
         while (true) {
+            // 1. get instruction bytecode by PC
             int nextPC = frame.getNextPC();
             thread.setPc(nextPC);
-
-            //decode
             reader.reset(code, nextPC);
             int opcode = reader.readUint8();
+
+            // 2. decode instruction
             Instruction instruction = InstructionFactory.newInstruction(opcode);
             instruction.fetchOperands(reader);
             frame.setNextPC(reader.getPC());
 
-            //execute
+            // 3. execute instruction
             System.out.printf("pc:%2d inst:%s, %s\n", nextPC, instruction.getClass().getName(), instruction);
             instruction.execute(frame);
         }

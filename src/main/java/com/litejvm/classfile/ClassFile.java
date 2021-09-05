@@ -4,7 +4,6 @@ import com.litejvm.classfile.attribute.AbstractAttributeInfo;
 import com.litejvm.classfile.attribute.AttributeInfo;
 import com.litejvm.classfile.constant.ConstantClassInfo;
 import com.litejvm.classfile.constant.ConstantPool;
-import com.litejvm.classpath.Classpath;
 
 import java.util.Arrays;
 import java.util.List;
@@ -103,8 +102,11 @@ public class ClassFile {
     }
 
     public String getSuperClassName() {
-        ConstantClassInfo constantClassInfo = (ConstantClassInfo) this.constantPool.getConstantInfo().get(superClass);
-        return constantClassInfo.getName();
+        if (superClass > 0) {
+            ConstantClassInfo constantClassInfo = (ConstantClassInfo) this.constantPool.getConstantInfo().get(superClass);
+            return constantClassInfo.getName();
+        }
+        return "";
     }
 
     public List<Integer> getInterfaces() {
@@ -176,11 +178,5 @@ public class ClassFile {
         public char[] getContent() {
             return content;
         }
-    }
-
-    public static void main(String[] args) {
-        Classpath classpath = Classpath.parse(null, "C:\\Users\\Administrator\\IdeaProjects\\liteJVM-java\\test-class");
-        byte[] bytes = classpath.readClass("ClassTest.class");
-        ClassFile.parse(bytes);
     }
 }

@@ -18,7 +18,7 @@ public class DUP extends NoOperandsInstruction {
     public void execute(Frame frame) {
         OperandStack operandStack = frame.getOperandStack();
         Slot slot = operandStack.popSlot();
-        operandStack.pushSlot(slot);
-        operandStack.pushSlot(slot);
+        operandStack.pushSlot(Slot.copyFrom(slot));
+        operandStack.pushSlot(Slot.copyFrom(slot));
     }
 }

@@ -3,6 +3,7 @@ package com.litejvm.classfile;
 import com.litejvm.classfile.attribute.AbstractAttributeInfo;
 import com.litejvm.classfile.attribute.AttributeInfo;
 import com.litejvm.classfile.attribute.CodeAttribute;
+import com.litejvm.classfile.attribute.ConstantValueAttribute;
 import com.litejvm.classfile.constant.ConstantPool;
 
 import java.util.ArrayList;
@@ -46,6 +47,15 @@ public class MemberInfo {
         for (AttributeInfo attribute : attributes) {
             if (attribute instanceof CodeAttribute) {
                 return (CodeAttribute) attribute;
+            }
+        }
+        return null;
+    }
+
+    public ConstantValueAttribute getConstantValueAttribute() {
+        for (AttributeInfo attribute : attributes) {
+            if (attribute instanceof ConstantValueAttribute) {
+                return (ConstantValueAttribute) attribute;
             }
         }
         return null;
