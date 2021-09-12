@@ -19,6 +19,12 @@ public class Args {
     @Parameter(names = "-Xjre", description = "path to jre directory", order = 4)
     String Xjre;
 
+    @Parameter(names = "-verboseClass", order = 5)
+    boolean verboseClassFlag = false;
+
+    @Parameter(names = "-verboseInst", order = 6)
+    boolean verboseInstFlag = false;
+
     @Parameter(description = "main class and args")
     List<String> mainClassAndArgs;
 

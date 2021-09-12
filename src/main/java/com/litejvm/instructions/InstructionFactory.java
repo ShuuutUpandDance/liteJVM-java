@@ -17,9 +17,7 @@ import com.litejvm.instructions.constants.ipush.SIPUSH;
 import com.litejvm.instructions.constants.ldc.LDC;
 import com.litejvm.instructions.constants.ldc.LDC2_W;
 import com.litejvm.instructions.constants.ldc.LDC_W;
-import com.litejvm.instructions.control.GOTO;
-import com.litejvm.instructions.control.LOOKUP_SWITCH;
-import com.litejvm.instructions.control.TABLE_SWITCH;
+import com.litejvm.instructions.control.*;
 import com.litejvm.instructions.conversions.d2x.D2F;
 import com.litejvm.instructions.conversions.d2x.D2I;
 import com.litejvm.instructions.conversions.d2x.D2L;
@@ -199,6 +197,12 @@ public class InstructionFactory {
     static Instruction fcmpg = new FCMPG();
     static Instruction dcmpl = new DCMPL();
     static Instruction dcmpg = new DCMPG();
+    static Instruction ireturn = new IRETURN();
+    static Instruction lreturn = new LRETURN();
+    static Instruction freturn = new FRETURN();
+    static Instruction dreturn = new DRETURN();
+    static Instruction areturn = new ARETURN();
+    static Instruction _return = new RETURN();
 
     public static Instruction newInstruction(int opcode) {
         switch (opcode) {
@@ -374,20 +378,20 @@ public class InstructionFactory {
 //            case 0xa9: return null;
             case 0xaa: return new TABLE_SWITCH();
             case 0xab: return new LOOKUP_SWITCH();
-//            case 0xac: return null;
-//            case 0xad: return null;
-//            case 0xae: return null;
-//            case 0xaf: return null;
-//            case 0xb0: return null;
-//            case 0xb1: return null;
+            case 0xac: return ireturn;
+            case 0xad: return lreturn;
+            case 0xae: return freturn;
+            case 0xaf: return dreturn;
+            case 0xb0: return areturn;
+            case 0xb1: return _return;
             case 0xb2: return new GET_STATIC();
             case 0xb3: return new PUT_STATIC();
             case 0xb4: return new GET_FIELD();
             case 0xb5: return new PUT_FIELD();
             case 0xb6: return new INVOKE_VIRTUAL();
             case 0xb7: return new INVOKE_SPECIAL();
-//            case 0xb8: return null;
-//            case 0xb9: return null;
+            case 0xb8: return new INVOKE_STATIC();
+            case 0xb9: return new INVOKE_INTERFACE();
 //            case 0xba: return null;
             case 0xbb: return new NEW();
 //            case 0xbc: return null;

@@ -29,12 +29,12 @@ public class Main {
         // java.lang.Object => java/lang/Object
         String formattedClassName = args.getMainClass().replace(".", "/");
 
-        ClassLoader classLoader = new ClassLoader(classpath);
+        ClassLoader classLoader = new ClassLoader(classpath, args.verboseClassFlag);
         Class mainClass = classLoader.loadClass(formattedClassName);
         Method mainMethod = mainClass.getMainMethod();
 
         if (mainMethod != null) {
-            new Interpreter().interpret(mainMethod);
+            new Interpreter().interpret(mainMethod, args.verboseInstFlag);
         } else {
             System.out.printf("Main method not found in class %s\n", args.getMainClass());
         }

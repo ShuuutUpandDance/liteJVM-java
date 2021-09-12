@@ -59,6 +59,10 @@ public class LocalVars {
         return this.slots.get(index).ref;
     }
 
+    public void setSlot(int index, Slot slot) {
+        this.slots.set(index, slot);
+    }
+
     @Override
     public String toString() {
         return "LocalVars{" +

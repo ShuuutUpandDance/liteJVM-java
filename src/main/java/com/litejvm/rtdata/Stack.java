@@ -40,4 +40,8 @@ public class Stack {
 
         return this.top;
     }
+
+    public boolean isEmpty() {
+        return this.top == null;
+    }
 }

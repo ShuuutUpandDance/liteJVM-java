@@ -10,10 +10,16 @@ import java.util.stream.Collectors;
 public class ClassLoader {
     Classpath classpath;
     Map<String, Class> classMap;
+    boolean verboseFlag;
 
     public ClassLoader(Classpath classpath) {
+        this(classpath, false);
+    }
+
+    public ClassLoader(Classpath classpath, boolean verboseFlag) {
         this.classpath = classpath;
         this.classMap = new HashMap<>();
+        this.verboseFlag = verboseFlag;
     }
 
     public Class loadClass(String name) {
@@ -28,7 +34,9 @@ public class ClassLoader {
         byte[] bytes = readClass(name);
         Class clazz = defineClass(bytes);
         link(clazz);
-        System.out.printf("[Loaded %s]\n", name);
+        if (verboseFlag) {
+            System.out.printf("[Loaded %s]\n", name);
+        }
         return clazz;
     }
 

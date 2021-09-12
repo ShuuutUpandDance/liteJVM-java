@@ -1,5 +1,6 @@
 package com.litejvm.instructions.references;
 
+import com.litejvm.instructions.base.ClassInitLogic;
 import com.litejvm.instructions.base.Index16Instruction;
 import com.litejvm.rtdata.Frame;
 import com.litejvm.rtdata.OperandStack;
@@ -21,6 +22,12 @@ public class GET_STATIC extends Index16Instruction {
         FieldRef fieldRef = (FieldRef) constantPool.getConstant(this.index);
         Field field = fieldRef.resolvedField();
         Class fieldClass = field.clazz;
+
+        if (!fieldClass.isInitStarted()) {
+            frame.revertNextPC();
+            ClassInitLogic.initClass(frame.thread, fieldClass);
+            return;
+        }
 
         if (!field.isStatic()) {
             throw new IncompatibleClassChangeError();

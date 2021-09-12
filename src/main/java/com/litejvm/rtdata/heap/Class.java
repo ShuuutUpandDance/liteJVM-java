@@ -44,6 +44,7 @@ public class Class {
     public int instanceSlotCount;
     public int staticSlotCount;
     public Slots staticVars;
+    public boolean initStarted;
 
     public Class(ClassFile classFile) {
         this.accessFlags = classFile.getAccessFlags();
@@ -57,6 +58,10 @@ public class Class {
 
     public Method getMainMethod() {
         return getStaticMethod("main", "([Ljava/lang/String;)V");
+    }
+
+    public Method getClinitMethod() {
+        return getStaticMethod("<clinit>", "()V");
     }
 
     public Method getStaticMethod(String name, String descriptor) {
@@ -106,6 +111,18 @@ public class Class {
 
     public Slots getStaticVars() {
         return staticVars;
+    }
+
+    public boolean isInitStarted() {
+        return initStarted;
+    }
+
+    public void startInit() {
+        this.initStarted = true;
+    }
+
+    public void setInitStarted(boolean initStarted) {
+        this.initStarted = initStarted;
     }
 
     ConstantPool newConstantPool(com.litejvm.classfile.constant.ConstantPool constantPool) {
@@ -163,6 +180,7 @@ public class Class {
             method.clazz = this;
             method.copyMemberInfo(memberInfo);
             method.copyAttributes(memberInfo);
+            method.calcArgSlotCount();
             result.add(method);
         }
         return result;
@@ -193,6 +211,10 @@ public class Class {
             supClazz = supClazz.superClass;
         }
         return false;
+    }
+
+    public boolean isSuperClassOf(Class other) {
+        return other.isSubClassOf(this);
     }
 
     public boolean isImplements(Class other) {

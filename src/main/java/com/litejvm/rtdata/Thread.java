@@ -1,7 +1,7 @@
 package com.litejvm.rtdata;
 
 public class Thread {
-    int pc;
+    public int pc;
     final Stack stack;
 
     public Thread() {
@@ -24,7 +24,15 @@ public class Thread {
         return this.stack.pop();
     }
 
+    public Frame topFrame() {
+        return this.stack.top();
+    }
+
     public Frame currentFrame() {
         return this.stack.top();
+    }
+
+    public boolean isStackEmpty() {
+        return stack.isEmpty();
     }
 }

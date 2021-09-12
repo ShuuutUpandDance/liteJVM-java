@@ -71,6 +71,10 @@ public class OperandStack {
         return ref;
     }
 
+    public Object getRefFromTop(int n) {
+        return this.slots[size - 1 - n].ref;
+    }
+
     @Override
     public String toString() {
         return "OperandStack{" +

@@ -32,8 +32,16 @@ public class ClassMember {
         return clazz == other;
     }
 
+    public boolean isAbstract() {
+        return (this.accessFlags & Class.ACC_ABSTRACT) != 0;
+    }
+
     public boolean isPublic() {
         return (this.accessFlags & Class.ACC_PUBLIC) != 0;
+    }
+
+    public boolean isNative() {
+        return (this.accessFlags & Class.ACC_NATIVE) != 0;
     }
 
     public boolean isPrivate() {
